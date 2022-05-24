@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from django.urls import reverse
 
 from accounts.models import User
 from project.models import Project
@@ -22,7 +23,8 @@ class Task(models.Model):
         (COMPLETED, 'Completed',),
 
     )
-
+    title = models.CharField(max_length=255, null=True, blank=False)
+    description = models.CharField(max_length=255, null=True, blank=False)
     assignee = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(choices=STATUS_TYPE_CHOICES, max_length=1, default=PENDING)
     deadline = models.DateField()
@@ -33,3 +35,9 @@ class Task(models.Model):
         on_delete=models.CASCADE,
         related_name='tasks',
     )
+
+    def __str__(self):
+        return str(self.title)
+
+    def get_absolute_url(self):
+        return reverse('task:task-detail', kwargs={'pk': self.pk})
