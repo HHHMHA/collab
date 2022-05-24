@@ -3,19 +3,33 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    Hi {{ user.username }}!
-    <p><a href="{% url 'logout' %}">Log Out</a></p>
-    <p><a href="{% url 'password_change' %}">Change password</a></p>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Hi {{ user.username }}!</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    {% for task in user.task_set.all %}
-        <li>{{ task.title }} </li>
-        <li>{{ task.description }} </li>
-        <li>{{ task.status }}  </li>
-        <li>{{ task.deadline }} </li>
-        <li>
-            <a href="{% url "task:update-task" task.pk %}">Task</a>
-        </li>
-    {% empty %}
-        <li>No articles yet.</li>
-    {% endfor %}
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'password_change' %}">Change password</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <div class="list-group">
+        {% for task in user.task_set.all %}
+            <a href="{% url "task:update-task" task.pk %}" class="list-group-item list-group-item-action">
+                {{ task.title }} | {{ task.get_status_display }} | {{ task.deadline }}
+            </a>
+        {% empty %}
+            <a href="#" class="list-group-item list-group-item-action">No tasks yet.</a>
+        {% endfor %}
+    </div>
 {% endblock %}
