@@ -24,7 +24,7 @@
 
 
     <div class="list-group">
-        {% for task in user.task_set.all %}
+        {% for task in object_list %}
             <a href="{% url "task:update-task" task.pk %}" class="list-group-item list-group-item-action">
                 {{ task.title }} | {{ task.get_status_display }} | {{ task.deadline }}
             </a>
