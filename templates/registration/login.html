@@ -10,14 +10,24 @@
         <div class="shape"></div>
     </div>
     <form method="post">
+    {% for error in form.non_field_errors %}
+    {{ error }}
+    {% endfor %}
       {% csrf_token %}
         <h3>Login Here</h3>
 
         <label for="username" name="user_name">Username</label>
         {{form.username}}
+        {% for error in form.username.errors %}
+            {{ error }}
+        {% endfor %}
+
 
         <label for="password" name="password">Password</label>
         {{form.password}}
+            {% for error in form.password.errors %}
+            {{ error }}
+        {% endfor %}
 
     <button type="submit">Log In</button>
     </form>
