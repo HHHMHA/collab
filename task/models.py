@@ -29,7 +29,7 @@ class Task(models.Model):
     status = models.CharField(choices=STATUS_TYPE_CHOICES, max_length=1, default=PENDING)
     deadline = models.DateField()
     upload = models.FileField(upload_to=user_directory_path)
-    subtask = models.ForeignKey("self", on_delete=models.CASCADE, related_name='subtasks', null=True, blank=True)
+    dependencies = models.ManyToManyField("self")
     project = models.ForeignKey(
         Project,
         on_delete=models.CASCADE,
