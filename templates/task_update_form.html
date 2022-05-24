@@ -3,14 +3,19 @@
 {% block title %}Task Updated{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-  You are updating your tasks {{ user.username }}
-  <p><a href="{% url 'logout' %}">Log Out</a></p>
+    <p><a href="{% url 'logout' %}">Log Out</a></p>
+    This is your task {{ user.username }}!, please finish them ASAP
+    <p><a href="{% url 'logout' %}">Log Out</a></p>
 
-<form method="post" enctype="multipart/form-data">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Update">
-</form>
-
-{% endif %}
+    <li>{{ object.title }} </li>
+    <li>{{ object.description }} </li>
+    <li>{{ object.status }}  </li>
+    <li>{{ object.deadline }} </li>
+    {% for comment in object.comments.all %}
+        <li>{{ comment.comment }} </li>
+    {% endfor %}
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Update">
+    </form>
 {% endblock %}

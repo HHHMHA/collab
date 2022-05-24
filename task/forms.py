@@ -4,12 +4,6 @@ from comment.models import Comment
 from task.models import Task
 
 
-# class CommentForm(forms.ModelForm):
-#     class Meta:
-#         model = Comment
-#         fields = ['comment']
-
-
 class TaskUpdateForm(forms.ModelForm):
     comment = forms.CharField(max_length=255, required=False,
                               widget=forms.Textarea(
@@ -32,8 +26,8 @@ class TaskUpdateForm(forms.ModelForm):
 
     def save(self, commit=True):
         task = super(TaskUpdateForm, self).save(commit=False)
-        if self.cleaned_data['comment'] != "":
-            comment = Comment.objects.create(task=self.instance, comment=self.cleaned_data['comment'])
+        if self.cleaned_data['comment'] != "" and commit:
+            Comment.objects.create(task=self.instance, comment=self.cleaned_data['comment'])
         if commit:
             task.save()
         return task
