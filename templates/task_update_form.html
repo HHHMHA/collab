@@ -3,19 +3,55 @@
 {% block title %}Task Updated{% endblock %}
 
 {% block content %}
-    <p><a href="{% url 'logout' %}">Log Out</a></p>
-    This is your task {{ user.username }}!, please finish them ASAP
-    <p><a href="{% url 'logout' %}">Log Out</a></p>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Hi {{ user.username }}!</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <li>{{ object.title }} </li>
-    <li>{{ object.description }} </li>
-    <li>{{ object.status }}  </li>
-    <li>{{ object.deadline }} </li>
+        <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="card text-white bg-dark my-3 mx-auto" style="max-width: 18rem;">
+        <div class="card-header text-center" onclick="toggleForm()">Update</div>
+        <div class="card-body">
+            <h5 class="card-title">{{ object.title }}</h5>
+            <p class="card-text">{{ object.description }}</p>
+            <h6>{{ object.get_status_display }} </h6>
+            <h6>{{ object.deadline }} </h6>
+        </div>
+    </div>
+
     {% for comment in object.comments.all %}
-        <li>{{ comment.comment }} </li>
+        <div class="card text-center text-white bg-dark mb-3">
+            <div class="card-body">
+                <p class="card-text">{{ comment.comment }}</p>
+            </div>
+        </div>
     {% endfor %}
-    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+
+    <form method="post" enctype="multipart/form-data" id="form" style="height: 730px" hidden>{% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Update">
     </form>
+{% endblock %}
+
+{% block js %}
+    <script>
+        const form = document.getElementById('form');
+
+        function toggleForm() {
+            form.hidden = !form.hidden;
+        }
+    </script>
 {% endblock %}

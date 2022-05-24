@@ -40,4 +40,4 @@ class Task(models.Model):
         return str(self.title)
 
     def get_absolute_url(self):
-        return reverse('task:task-detail', kwargs={'pk': self.pk})
+        return reverse('task:update-task', kwargs={'pk': self.pk})
